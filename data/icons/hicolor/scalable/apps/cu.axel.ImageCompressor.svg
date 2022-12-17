@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" version="1.1"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="Gradient" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" style="stop-color:#1C71D8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1AB4AB;stop-opacity:1" />
+    </linearGradient>
+    <filter id="alpha-to-white">
+      <feColorMatrix in="SourceGraphic" type="matrix"
+                     values="0 0 0 1 0
+                             0 0 0 1 0
+                             0 0 0 1 0
+                             0 0 0 1 0"/>
+    </filter>
+    <g id="child-svg">
+<svg
+   version="1.1"
+   id="mdi-image-size-select-large"
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   sodipodi:docname="image-size-select-large.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7" />
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="21.875"
+     inkscape:cx="11.977143"
+     inkscape:cy="11.977143"
+     inkscape:window-width="1366"
+     inkscape:window-height="699"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="mdi-image-size-select-large" />
+  <path
+     d="M21,15H23V17H21V15M21,11H23V13H21V11M23,19H21V21C22,21 23,20 23,19M13,3H15V5H13V3M21,7H23V9H21V7M21,3V5H23C23,4 22,3 21,3M1,7H3V9H1V7M17,3H19V5H17V3M17,19H19V21H17V19M3,3C2,3 1,4 1,5H3V3M9,3H11V5H9V3M5,3H7V5H5V3M1,11V19A2,2 0 0,0 3,21H15V11H1M3,19L5.5,15.79L7.29,17.94L9.79,14.72L13,19H3Z"
+     id="path2" />
+</svg>
+</g>
+  </defs>
+  <rect
+      width="256"
+      height="256"
+      fill="url(#Gradient)"
+      ry="128"
+      x="0"
+      y="0" />
+  <use xlink:href="#child-svg" filter="url(#alpha-to-white)"
+       transform="matrix(5.333333333333333,0,0,5.333333333333333,64,64)" />
+</svg>

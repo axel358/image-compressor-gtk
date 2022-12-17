@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Image Compressor
+Exec=imagecompressor
+Icon=cu.axel.ImageCompressor
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

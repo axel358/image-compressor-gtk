@@ -1,0 +1,144 @@
+using Gtk 4.0;
+using Adw 1;
+
+template ImagecompressorWindow : Adw.ApplicationWindow {
+  default-width: 500;
+  default-height: 650;
+  title: "Image Compressor";
+
+  Box {
+    orientation: vertical;
+
+    HeaderBar header_bar {
+      
+      [start]
+      Button {
+        label: "Open";
+        clicked => open_image();
+      }
+
+      [end]
+      MenuButton {
+        icon-name: "open-menu-symbolic";
+        menu-model: primary_menu;
+      }
+    }
+
+    Box {
+      orientation: vertical;
+      spacing: 12;
+      margin-bottom: 12;
+      margin-top: 12;
+      
+      Adw.StatusPage status_page {
+        icon-name: "image-x-generic-symbolic";
+        title: "No image open";
+        description: "Tap open to select an image";
+      }
+
+      Image preview_image{
+        visible: false;
+        vexpand: true;
+      }
+
+      Button info_label {
+        label: "1366x768 1.3Mb";
+        styles ["pill"]
+        halign: center;
+        visible: false;
+      }
+
+      Adw.PreferencesGroup {
+        margin-start: 24;
+        margin-end: 24;
+        title: "Options";
+
+        Adw.ActionRow {
+          title: "Quality";
+
+          Scale quality_scale {
+            hexpand: true;
+            valign: center;
+            draw-value: true;
+            value-pos: right;
+            value-changed => on_quality_changed();
+
+            adjustment:
+            Adjustment {
+              lower: 0;
+              upper: 100;
+              value: 50;
+            };
+          }
+          
+          Label {
+            label: "%";
+          }
+        }
+
+        Adw.ActionRow {
+          title: "Resolution";
+
+          Scale resolution_scale {
+            hexpand: true;
+            valign: center;
+            draw-value: true;
+            value-pos: right;
+            value-changed => on_resolution_changed();
+
+            adjustment:
+            Adjustment {
+              lower: 0;
+              upper: 100;
+              value: 50;
+            };
+          }
+
+          Label {
+            label: "%";
+          }
+        }
+
+        Adw.ActionRow {
+          title: "Format";
+
+          CheckButton cb {
+            label: "JPG";
+            group: cb;
+            active: true;
+          }
+
+          CheckButton {
+            label: "WEBP";
+            group: cb;
+          }
+        }
+      }
+
+      Button {
+        halign: center;
+        label: "Save";
+        styles ["pill", "suggested-action"]
+      }
+    }
+  }
+}
+
+menu primary_menu {
+  section {
+    item {
+      label: _("_Preferences");
+      action: "app.preferences";
+    }
+
+    item {
+      label: _("_Keyboard Shortcuts");
+      action: "win.show-help-overlay";
+    }
+
+    item {
+      label: _("_About ImageCompressor");
+      action: "app.about";
+    }
+  }
+}

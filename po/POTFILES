@@ -1,0 +1,6 @@
+data/cu.axel.ImageCompressor.desktop.in
+data/cu.axel.ImageCompressor.appdata.xml.in
+data/cu.axel.ImageCompressor.gschema.xml
+src/main.py
+src/window.py
+src/window.ui
