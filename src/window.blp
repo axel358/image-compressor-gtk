@@ -2,8 +2,8 @@ using Gtk 4.0;
 using Adw 1;
 
 template ImagecompressorWindow : Adw.ApplicationWindow {
-  default-width: 500;
-  default-height: 650;
+  default-width: 480;
+  default-height: 670;
   title: "Image Compressor";
 
   Box {
@@ -23,7 +23,7 @@ template ImagecompressorWindow : Adw.ApplicationWindow {
         menu-model: primary_menu;
       }
     }
-
+    Adw.ToastOverlay toast_overlay{
     Box {
       orientation: vertical;
       spacing: 12;
@@ -100,17 +100,29 @@ template ImagecompressorWindow : Adw.ApplicationWindow {
         }
 
         Adw.ActionRow {
+          title: "Remove image metadata";
+
+          Switch meta_switch {
+            valign: center;
+            active: true;
+            state-set => on_remove_metadata_set();
+          }
+        }
+
+        Adw.ActionRow {
           title: "Format";
 
           CheckButton cb {
-            label: "JPG";
+            label: "JPEG";
             group: cb;
             active: true;
+            toggled => set_format();
           }
 
           CheckButton {
-            label: "WEBP";
+            label: "WebP";
             group: cb;
+            toggled => set_format();
           }
         }
       }
@@ -118,8 +130,10 @@ template ImagecompressorWindow : Adw.ApplicationWindow {
       Button {
         halign: center;
         label: "Save";
+        clicked => save_image();
         styles ["pill", "suggested-action"]
       }
+    }
     }
   }
 }
@@ -137,7 +151,7 @@ menu primary_menu {
     }
 
     item {
-      label: _("_About ImageCompressor");
+      label: _("_About Image Compressor");
       action: "app.about";
     }
   }

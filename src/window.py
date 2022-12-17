@@ -17,8 +17,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
+from gi.repository import Adw, GLib, Gtk, GExiv2
 from PIL import Image
 from pathlib import Path
 import os
@@ -32,6 +31,9 @@ class ImagecompressorWindow(Adw.ApplicationWindow):
     info_label = Gtk.Template.Child()
     quality_scale = Gtk.Template.Child()
     resolution_scale = Gtk.Template.Child()
+    toast_overlay = Gtk.Template.Child()
+    format = "JPEG"
+    remove_meta = True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -64,18 +66,48 @@ class ImagecompressorWindow(Adw.ApplicationWindow):
     def on_quality_changed(self, scale):
         self.compress()
 
+    @Gtk.Template.Callback()
+    def on_remove_metadata_set(self, switch, checked):
+        self.remove_meta = checked
+        self.compress()
+
     def compress(self):
-        temp_path = os.path.join(Path.home(), '.cache', 'tmp.jpg')
+        temp_dir = os.path.join(GLib.get_user_cache_dir(), 'ImageCompressor')
+        if not os.path.exists(temp_dir):
+            os.makedirs(temp_dir)
+        self.temp_path = os.path.join(temp_dir, 'temp.jpg')
         with Image.open(self.file_path) as image:
                 scale_factor = self.resolution_scale.get_value() * 0.01
                 quality = int(self.quality_scale.get_value())
                 resized_image = image.resize([int(image.width * scale_factor), int(image.height * scale_factor)])
-                print(str(int(image.width * scale_factor)))
-                resized_image.save(temp_path, quality=quality)
+                resized_image.save(self.temp_path, format=self.format, quality=quality, method=6, optimize=True)
 
-        with Image.open(temp_path) as image:
-            self.info_label.set_label(str(image.width) + 'x' + str(image.height) + ' ' + self.format_size(Path(temp_path).stat().st_size))
-            self.preview_image.set_from_file(temp_path)
+        if self.remove_meta:
+            image = GExiv2.Metadata(self.temp_path)
+            image.clear_exif()
+            image.clear_xmp()
+            image.save_file()
+
+        with Image.open(self.temp_path) as image:
+            self.info_label.set_label(str(image.width) + 'x' + str(image.height) + ' ' + self.format_size(Path(self.temp_path).stat().st_size))
+            self.preview_image.set_from_file(self.temp_path)
+
+    @Gtk.Template.Callback()
+    def save_image(self, button):
+        file_name = os.path.basename(self.file_path)
+        save_name = os.path.splitext(file_name)[0] + '.' + self.format.lower()
+        save_file_path = os.path.join(GLib.get_user_special_dir(GLib.USER_DIRECTORY_PICTURES), save_name)
+        with open(self.temp_path, 'rb') as tmp_file:
+            with open(save_file_path, 'wb') as save_file:
+                save_file.write(tmp_file.read())
+
+        self.toast_overlay.add_toast(Adw.Toast().new(title='Saved to Pictures'))
+
+    @Gtk.Template.Callback()
+    def set_format(self, button):
+        if button.props.active:
+            self.format = button.props.label
+        self.compress()
     
     def format_size(self, size, decimal_places=1):
         for unit in ['B', 'KiB', 'MiB', 'GiB', 'TiB']:
